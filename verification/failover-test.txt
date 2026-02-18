@@ -1,0 +1,8 @@
+Test 1: Primary ISP Active
+Traceroute → 203.0.113.1
+
+Test 2: Primary Interface Shutdown
+Traceroute → 203.0.113.5
+
+Result:
+Automatic route failover successful.

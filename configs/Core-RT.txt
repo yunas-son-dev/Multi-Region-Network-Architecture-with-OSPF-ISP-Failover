@@ -1,0 +1,13 @@
+hostname Core-RT
+
+router ospf 1
+ router-id 1.1.1.1
+ network 172.16.65.192 0.0.0.31 area 0
+ network 172.16.65.252 0.0.0.3 area 0
+ network 172.16.66.0   0.0.0.3 area 0
+
+! Primary ISP
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+
+! Backup ISP
+ip route 0.0.0.0 0.0.0.0 203.0.113.5 10
