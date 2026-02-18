@@ -28,7 +28,7 @@ The architecture consists of:
 Topology design discussion and configuration notes:
 
 Design & Implementation Notes:  
-https://github.com/yunas-son-dev/Multi-Region-Network-Architecture-with-OSPF-ISP-Failover/issues/1#issue-3956868718
+https://github.com/user-attachments/assets/53cede5a-5f19-4fc0-9646-414028943f82
 
 This issue documents routing behavior observations, adjacency validation details, and failover testing results during implementation.
 
@@ -45,8 +45,8 @@ Subnet allocation was designed based on host requirements per segment.
 
 ### Subnet Allocation Summary
 
-| Subnet | Network | Purpose |
-|--------|----------|----------|
+| Subnet | Network |
+|--------|---------|
 | 172.16.64.0/24 | Branch-A VLAN10 |
 | 172.16.65.0/25 | Branch-B VLAN10 |
 | 172.16.65.128/26 | Branch-A VLAN20 |
@@ -187,5 +187,6 @@ This project reflects practical understanding of:
 ## Author
 
 Yuna Son
+
 Network & Infrastructure Engineering Focus  
 Master of Information Technology UTS
