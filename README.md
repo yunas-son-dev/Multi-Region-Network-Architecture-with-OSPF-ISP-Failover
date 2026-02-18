@@ -15,6 +15,7 @@ The network was built from an initial base addressing requirement (172.16.0.0/16
 ---
 
 ## Network Topology
+![Network Topology](topology/topology.png)
 
 The architecture consists of:
 
@@ -24,11 +25,6 @@ The architecture consists of:
 - Dual ISP connections (Primary / Backup)
 - VLAN-based internal segmentation
 - Point-to-point WAN links between all routers
-
-Topology design discussion and configuration notes:
-
-Design & Implementation Notes:  
-https://github.com/user-attachments/assets/53cede5a-5f19-4fc0-9646-414028943f82
 
 This issue documents routing behavior observations, adjacency validation details, and failover testing results during implementation.
 
@@ -155,6 +151,10 @@ verification/
   ├── ospf-neighbors.txt
   ├── routing-tables.txt
   └── failover-test.txt
+
+topology/
+  └── topology.png
+
 ```
 ---
 
