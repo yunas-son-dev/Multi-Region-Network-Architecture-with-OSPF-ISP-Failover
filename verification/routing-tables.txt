@@ -1,0 +1,97 @@
+========================================================
+ROUTING TABLE VALIDATION
+Multi-Region OSPF Architecture with Dual ISP Failover
+========================================================
+
+
+##############################
+Core-RT (OSPF Process 1)
+##############################
+
+--- Connected Networks ---
+C 172.16.65.192/27      directly connected (Fa1/0)
+C 172.16.65.252/30      directly connected (S0/0/0)
+C 172.16.66.0/30        directly connected (S0/0/1)
+C 203.0.113.0/30        directly connected (Fa0/0)  (ISP Primary)
+C 203.0.113.4/30        directly connected (Fa0/1)  (ISP Backup)
+
+--- OSPF Learned Routes ---
+O 172.16.64.0/24        via 172.16.65.254 (Branch-A)
+O 172.16.65.0/25        via 172.16.66.2   (Branch-B)
+O 172.16.65.128/26      via 172.16.65.254 (Branch-A)
+O 172.16.65.224/28      via 172.16.66.2   (Branch-B)
+O 172.16.65.240/29      via 172.16.65.254 (Branch-A)
+O 172.16.65.248/30      via 172.16.66.2   (Branch-B)
+O 172.16.66.4/30        via ECMP (Both Branch-A & Branch-B)
+
+--- Default Routes ---
+S* 0.0.0.0/0 via 203.0.113.1   (Primary ISP)
+S* 0.0.0.0/0 via 203.0.113.5   (Secondary ISP - Higher AD)
+
+Validation:
+• OSPF adjacency established with Branch-A (2.2.2.2)
+• OSPF adjacency established with Branch-B (3.3.3.3)
+• Dual default routes configured for ISP failover
+
+
+##############################
+Branch-A-RT
+##############################
+
+--- Connected Networks ---
+C 172.16.64.0/24
+C 172.16.65.128/26
+C 172.16.65.240/29
+C 172.16.65.252/30
+C 172.16.66.4/30
+
+--- OSPF Learned Routes ---
+O 172.16.65.0/25
+O 172.16.65.192/27
+O 172.16.65.224/28
+O 172.16.65.248/30
+O 172.16.66.0/30
+
+Validation:
+• OSPF neighbors:
+  - Core-RT (1.1.1.1)
+  - Branch-B-RT (3.3.3.3)
+• Routing table reflects full OSPF propagation
+
+
+##############################
+Branch-B-RT
+##############################
+
+--- Connected Networks ---
+C 172.16.65.0/25
+C 172.16.65.224/28
+C 172.16.65.248/30
+C 172.16.66.0/30
+C 172.16.66.4/30
+
+--- OSPF Learned Routes ---
+O 172.16.64.0/24
+O 172.16.65.128/26
+O 172.16.65.192/27
+O 172.16.65.240/29
+O 172.16.65.252/30
+
+Validation:
+• OSPF neighbors:
+  - Core-RT (1.1.1.1)
+  - Branch-A-RT (2.2.2.2)
+• All routes properly exchanged via OSPF
+
+
+========================================================
+FAILOVER VALIDATION
+========================================================
+
+1. Verified connectivity via Primary ISP (203.0.113.1)
+2. Shut down Fa0/0 on Core-RT
+3. Traffic automatically switched to 203.0.113.5
+4. Ping & traceroute confirmed successful failover
+
+Result:
+Redundant internet connectivity maintained without manual intervention.
