@@ -1,8 +1,63 @@
-Test 1: Primary ISP Active
-Traceroute → 203.0.113.1
+========================================================
+FAILOVER VALIDATION – Static Default Route with AD
+========================================================
 
-Test 2: Primary Interface Shutdown
-Traceroute → 203.0.113.5
+Topology:
+Core-RT configured with dual default routes:
+- Primary ISP → 203.0.113.1 (AD 1)
+- Backup ISP  → 203.0.113.5 (AD 10)
+
+
+--------------------------------------------------------
+Test 1 – Primary ISP Operational
+--------------------------------------------------------
+
+Core-RT#show ip route | include 0.0.0.0
+S* 0.0.0.0/0 [1/0] via 203.0.113.1
+
+Core-RT#ping 11.11.11.11
+!!!!!
+Success rate is 100 percent (5/5)
+
+Core-RT#traceroute 11.11.11.11
+1 203.0.113.1
 
 Result:
-Automatic route failover successful.
+• Traffic exits via Primary ISP
+• Default route selected with lower AD
+
+
+--------------------------------------------------------
+Test 2 – Simulated Primary ISP Failure
+--------------------------------------------------------
+
+Core-RT(config)#interface fa0/0
+Core-RT(config-if)#shutdown
+
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to administratively down
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to down
+
+Core-RT#show ip route | include 0.0.0.0
+S* 0.0.0.0/0 [10/0] via 203.0.113.5
+
+Core-RT#ping 11.11.11.11
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 0/1/5 ms
+
+Core-RT#traceroute 11.11.11.11
+1 203.0.113.5
+
+Result:
+• Primary route removed from routing table
+• Backup route (higher AD) activated automatically
+• External connectivity maintained
+• No packet loss observed
+
+
+--------------------------------------------------------
+Conclusion
+--------------------------------------------------------
+
+• Administrative Distance correctly enforced
+• Automatic failover achieved without manual intervention
+• Redundant internet connectivity validated

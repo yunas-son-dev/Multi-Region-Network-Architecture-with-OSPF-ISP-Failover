@@ -184,9 +184,7 @@ This project reflects practical understanding of:
 
 ---
 
-## Author
+### Contributors 
 
-Yuna Son
-
-Network & Infrastructure Engineering Focus  
-Master of Information Technology UTS
+- Yuna Son – Repository structure, documentation, routing validation
+- Ashiwin Saravanan – Network configuration collaboration, testing validation
